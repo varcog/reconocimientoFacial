@@ -14,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static com.varcog.reconocimientofacial.constants.ReconocimientoConstants.NO_ROSTRO;
-import static com.varcog.reconocimientofacial.constants.ReconocimientoConstants.SIMILARES;
-import static com.varcog.reconocimientofacial.constants.ReconocimientoConstants.DIFERENTES;
+import static com.varcog.reconocimientofacial.constants.ReconocimientoConstants.*;
 
 @Slf4j
 @RestController
@@ -40,7 +38,7 @@ public class ReconocimientoController {
         String resultReconocimiento = reconocimientoService.compareFaces(file1.getBytes(), file2.getBytes());
         switch (resultReconocimiento) {
             case NO_ROSTRO:
-                new ResponseEntity<>("Error: una o ambas imágenes no contienen exactamente un rostro detectado.".getBytes(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Error: una o ambas imágenes no contienen exactamente un rostro detectado.".getBytes(), HttpStatus.BAD_REQUEST);
             case SIMILARES:
                 return new ResponseEntity<>("Los dos rostros son similares.".getBytes(), HttpStatus.OK);
             case DIFERENTES:
