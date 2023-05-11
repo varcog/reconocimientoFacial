@@ -1,6 +1,7 @@
 package com.varcog.reconocimientofacial.controller;
 
 import com.varcog.reconocimientofacial.service.ReconocimientoService;
+import com.varcog.reconocimientofacial.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,9 @@ public class ReconocimientoController {
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/compareFaces", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> compareFaces(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) throws IOException {
-        String resultReconocimiento = reconocimientoService.compareFaces(file1.getBytes(), file2.getBytes());
+        String urlImage1 = FileUploadUtil.saveFileDefault(file1);
+        String urlImage2 = FileUploadUtil.saveFileDefault(file2);
+        String resultReconocimiento = reconocimientoService.compareFaces5(urlImage1, urlImage2);
         switch (resultReconocimiento) {
             case NO_ROSTRO:
                 return new ResponseEntity<>("Error: una o ambas imágenes no contienen exactamente un rostro detectado.".getBytes(), HttpStatus.BAD_REQUEST);
